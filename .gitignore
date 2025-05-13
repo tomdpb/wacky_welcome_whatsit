@@ -1,5 +1,6 @@
 # Don't actually save audio files
 audio/*
+!audio/.gitkeep
 # debug "magnet" simulation file
 magnet
 
