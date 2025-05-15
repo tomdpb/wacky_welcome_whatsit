@@ -37,7 +37,7 @@ def get_current_state(*, debug: bool = False) -> str:
 
 def main():
     sound_library = [s for s in AUDIO_FOLDER.iterdir() if s.name != ".gitkeep"]
-    door = Door(get_current_state())
+    door = Door(get_current_state(debug=DEBUG))
     while True:
         new_state = get_current_state(debug=DEBUG)
 
