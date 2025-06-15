@@ -1,4 +1,4 @@
-from gpiozero import Button
+from RPi import GPIO
 from playsound3 import playsound
 from pathlib import Path
 from time import sleep
@@ -7,7 +7,11 @@ import random
 AUDIO_FOLDER = Path("audio/")
 DEBUG = True
 PIN = 16
-magnet = Button(PIN)
+
+# Set GPIO mode to BCM
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+# magnet = Button(PIN)
 
 
 class Door:
@@ -29,7 +33,14 @@ def get_current_state(*, debug: bool = False) -> str:
         magnet_file = Path("magnet")
         magnets_are_connected: bool = magnet_file.exists()
     else:
-        magnets_are_connected: bool = magnet.is_pressed()
+        try:
+            magnet = GPIO.input(PIN)
+            if magnet == GPIO.HIGH:
+                magnets_are_connected = False
+            else:
+                magnets_are_connected = True
+        except Exception:
+            GPIO.cleanup()
 
     if magnets_are_connected:
         return "closed"
