@@ -1,3 +1,4 @@
+from gpiozero import Button
 from playsound3 import playsound
 from pathlib import Path
 from time import sleep
@@ -5,6 +6,8 @@ import random
 
 AUDIO_FOLDER = Path("audio/")
 DEBUG = True
+PIN = 16
+magnet = Button(PIN)
 
 
 class Door:
@@ -26,8 +29,7 @@ def get_current_state(*, debug: bool = False) -> str:
         magnet_file = Path("magnet")
         magnets_are_connected: bool = magnet_file.exists()
     else:
-        # TODO: substitute with actual implementation of magnet library
-        raise NotImplementedError("Not yet implemented")
+        magnets_are_connected: bool = magnet.is_pressed()
 
     if magnets_are_connected:
         return "closed"
