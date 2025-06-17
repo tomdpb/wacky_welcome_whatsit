@@ -73,7 +73,7 @@ def main():
                 chosen_sound = next(sound_generator)
                 playsound(chosen_sound)
 
-        sleep(1)  # seconds
+        sleep(0.5)  # seconds
 
 
 if __name__ == "__main__":
