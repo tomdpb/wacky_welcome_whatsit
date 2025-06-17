@@ -1,3 +1,4 @@
+from collections import deque
 from RPi import GPIO
 from playsound3 import playsound
 from pathlib import Path
@@ -47,9 +48,18 @@ def get_current_state(*, debug: bool = False) -> str:
     else:
         return "open"
 
+def sound_cycler(sounds):
+    queue = deque(sounds)
+    while True:
+        for _ in range(len(queue)):
+            yield queue[0]
+            queue.rotate(-1)
+        random.shuffle(queue)
+
 
 def main():
     sound_library = [s for s in AUDIO_FOLDER.iterdir() if s.name != ".gitkeep"]
+    sound_generator = sound_cycler(sound_library)
     door = Door(get_current_state(debug=DEBUG))
     while True:
         new_state = get_current_state(debug=DEBUG)
@@ -59,7 +69,7 @@ def main():
 
             # door just opened
             if new_state == "open":
-                chosen_sound = random.choice(sound_library)
+                chosen_sound = next(sound_generator)
                 playsound(chosen_sound)
 
         sleep(1)  # seconds
