@@ -5,8 +5,8 @@ from pathlib import Path
 from time import sleep
 import random
 
-AUDIO_FOLDER = Path("audio/")
-DEBUG = True
+AUDIO_FOLDER = Path("/home/pi/wacky_welcome_whatsit/audio/")
+DEBUG = False
 PIN = 16
 
 # Set GPIO mode to BCM
@@ -47,6 +47,7 @@ def get_current_state(*, debug: bool = False) -> str:
         return "closed"
     else:
         return "open"
+
 
 def sound_cycler(sounds):
     queue = deque(sounds)
